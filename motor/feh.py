@@ -1,11 +1,11 @@
 
-import RPi.GPIO as GPIO
+import pigpio
 import time
 
 SERVO_PIN_R = 16
 SERVO_PIN_L = 18
 
-pi=GPIO.pi()
+pi=pigpio.pi()
 
 while True:
     #　速く前進
