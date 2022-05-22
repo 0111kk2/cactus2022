@@ -20,6 +20,9 @@ MAG_ADDR = 0x13
 MAG_R_ADDR = 0x42
 i2c = SMBus(1)
 
+SERVO_PIN_R = 16
+SERVO_PIN_L = 18
+
 def bmx_setup():
     # acc_data_setup : 加速度の値をセットアップ
     i2c.write_byte_data(ACCL_ADDR, 0x0F, 0x03)
@@ -100,8 +103,7 @@ print('湿度 {}%'.format(bme280.humidity))  # 湿度を取得して表示
 print('気圧 {}hPa'.format(bme280.pressure))  # 気圧を取得して表示
 
 RX = 20
-SERVO_PIN_R = 16
-SERVO_PIN_L = 18
+
 
 pi = pigpio.pi()
 
@@ -400,7 +402,7 @@ if __name__ == "__main__": #ターミナルから実行した場合
             open_gps()
             t_start = time.time()
             i = 1
-            while i < 1:
+            while i :
                 utc, lat, lon, sHeight, gHeight = read_gps()
                 if utc == -1.0:
                     if lat == -1.0:
