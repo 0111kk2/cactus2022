@@ -396,7 +396,8 @@ if __name__ == "__main__": #ターミナルから実行した場合
         try:
             open_gps()
             t_start = time.time()
-            while True:
+            i = 1
+            while i < 1:
                 utc, lat, lon, sHeight, gHeight = read_gps()
                 if utc == -1.0:
                     if lat == -1.0:
@@ -407,6 +408,7 @@ if __name__ == "__main__": #ターミナルから実行した場合
                         print("Status V")
                 else:
                     # pass
+                    i = 0
                     print(utc, lat, lon, sHeight, gHeight)
                 time.sleep(1)
         except KeyboardInterrupt:
