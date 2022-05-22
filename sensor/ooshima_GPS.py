@@ -288,7 +288,7 @@ if __name__ == '__main__':
                     # pass
                 else:
                     # pass
-                   print("Status V")
+                    print("Status V")
             else:
                 # pass
                 print(utc, lat, lon, sHeight, gHeight)
