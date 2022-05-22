@@ -393,25 +393,30 @@ if __name__ == "__main__": #ターミナルから実行した場合
         with open(filename, 'a', newline="") as f:
             writer = csv.writer(f)
             writer.writerow([mag[0], mag[1], mag[2]])
-    try:
-        open_gps()
-        t_start = time.time()
-        while True:
-            utc, lat, lon, sHeight, gHeight = read_gps()
-            if utc == -1.0:
-                if lat == -1.0:
-                    print("Reading gps Error")
-                    # pass
+        try:
+            open_gps()
+            t_start = time.time()
+            while True:
+                utc, lat, lon, sHeight, gHeight = read_gps()
+                if utc == -1.0:
+                    if lat == -1.0:
+                        print("Reading gps Error")
+                        # pass
+                    else:
+                        # pass
+                        print("Status V")
                 else:
                     # pass
-                    print("Status V")
-            else:
-                # pass
-                print(utc, lat, lon, sHeight, gHeight)
-            time.sleep(1)
-    except KeyboardInterrupt:
-        close_gps()
-        print("\r\nKeyboard Intruppted, Serial Closed")
-    except:
-        close_gps()
-        print(traceback.format_exc())
+                    print(utc, lat, lon, sHeight, gHeight)
+                time.sleep(1)
+        except KeyboardInterrupt:
+            close_gps()
+            print("\r\nKeyboard Intruppted, Serial Closed")
+        except:
+            close_gps()
+            print(traceback.format_exc())
+        
+        bme280.forced()  # Forcedモードで測定を行い, 結果をtemperature, pressure, humidityに入れる
+        print('気温 {}°C'.format(bme280.temperature))  # 気温を取得して表示
+        print('湿度 {}%'.format(bme280.humidity))  # 湿度を取得して表示
+        print('気圧 {}hPa'.format(bme280.pressure))  # 気圧を取得して表示
