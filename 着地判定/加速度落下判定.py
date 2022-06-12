@@ -2,7 +2,8 @@
 from tkinter import OFF
 from smbus import SMBus
 import cgsensor
-import pigpio as GPIO
+import pigpio
+import RPi.GPIO as GPIO
 import numpy as np
 import time
 import math
@@ -118,7 +119,10 @@ def write_data(f):
 
 if __name__ == "__main__": #ターミナルから実行した場合
     bmx_setup()
-    GPIO.output(16, 0)
+    led = 16
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(led,GPIO.OUT)
+    GPIO.output(led, False)
     time.sleep(0.1)
     now_time = datetime.datetime.now()
     filename = 'BMX055' + now_time.strftime('%Y%m%d_%H%M%S') + '.csv'
@@ -130,15 +134,16 @@ if __name__ == "__main__": #ターミナルから実行した場合
         f=open(filename, 'a', newline="")
         acc_abs=write_data(f)
         # 落下判定
-        if acc_abs<9.8:
+        if acc_abs<9.0:
             start_time=time.time()
             while True:
                 now_time=time.time()
                 count=now_time-start_time
                 write_data(f)
+                GPIO.output(led,True)
                 if count>=60: # 60秒経過後パラシュート溶断
-                    GPIO.output(16, 0) # 回路班の上げた回路図より
+                    GPIO.output(led, False) # 回路班の上げた回路図より
                     f.close()
                     break
-
+GPIO.cleanup()
         # 着地判定
