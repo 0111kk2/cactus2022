@@ -99,7 +99,7 @@ print('気温 {}°C'.format(bme280.temperature))  # 気温を取得して表示
 print('湿度 {}%'.format(bme280.humidity))  # 湿度を取得して表示
 print('気圧 {}hPa'.format(bme280.pressure))  # 気圧を取得して表示
 
-def write_data():
+def write_data(f):
     acc = acc_value()
     gyro= gyro_value()
     mag = mag_value()
@@ -108,13 +108,12 @@ def write_data():
     print("Mag -> x:{}, y:{}, z: {}".format(mag[0], mag[1], mag[2]))
     print("\n")
     time.sleep(0.1)
-    with open(filename, 'a', newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow([mag[0], mag[1], mag[2]])
-        ax=acc[0]
-        ay=acc[1]
-        az=acc[2]
-        acc_abs=np.sqrt(ax**2+ay**2+az**2)
+    writer = csv.writer(f)
+    writer.writerow([mag[0], mag[1], mag[2]])
+    ax=acc[0]
+    ay=acc[1]
+    az=acc[2]
+    acc_abs=np.sqrt(ax**2+ay**2+az**2)
     return acc_abs
 
 if __name__ == "__main__": #ターミナルから実行した場合
@@ -128,16 +127,18 @@ if __name__ == "__main__": #ターミナルから実行した場合
         writer = csv.writer(f)
         writer.writerow(['Mag_x', 'Mag_y', 'Mag_z'])
     while True:
-        acc_abs=write_data()
+        f=open(filename, 'a', newline="")
+        acc_abs=write_data(f)
         # 落下判定
         if acc_abs<9.8:
             start_time=time.time()
             while True:
                 now_time=time.time()
                 count=now_time-start_time
-                write_data()
+                write_data(f)
                 if count>=60: # 60秒経過後パラシュート溶断
                     GPIO.output(16, 0) # 回路班の上げた回路図より
+                    f.close()
                     break
 
         # 着地判定
