@@ -119,6 +119,7 @@ def write_data():
 
 if __name__ == "__main__": #ターミナルから実行した場合
     bmx_setup()
+    GPIO.output(16, 0)
     time.sleep(0.1)
     now_time = datetime.datetime.now()
     filename = 'BMX055' + now_time.strftime('%Y%m%d_%H%M%S') + '.csv'
