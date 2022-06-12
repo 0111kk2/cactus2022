@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+from tkinter import OFF
 from smbus import SMBus
 import cgsensor
+import pigpio as GPIO
+import numpy as np
 import time
 import math
 import datetime
@@ -47,10 +50,10 @@ def acc_value():
         for i in range(6):#各軸に関して2byteずつ存在している
             data[i] = i2c.read_byte_data(ACCL_ADDR, ACCL_R_ADDR + i) #1byteよんだら1byte隣に追加
         for i in range(3): #3軸
-            acc_data[i] = ((data[2*i + 1] * 256) + int(data[2*i] & 0xF0)) / 16 
+            acc_data[i] = ((data[2*i + 1] * 256) + int(data[2*i] & 0xF0)) / 16
             if acc_data[i] > 2047: #+-
                 acc_data[i] -= 4096
-            acc_data[i] *= 0.0098 
+            acc_data[i] *= 0.0098
     except IOError as e: #例外処理
         print("I/O error({0}): {1}".format(e.errno, e.strerror))
     return acc_data
@@ -96,7 +99,23 @@ print('気温 {}°C'.format(bme280.temperature))  # 気温を取得して表示
 print('湿度 {}%'.format(bme280.humidity))  # 湿度を取得して表示
 print('気圧 {}hPa'.format(bme280.pressure))  # 気圧を取得して表示
 
-
+def write_data():
+    acc = acc_value()
+    gyro= gyro_value()
+    mag = mag_value()
+    print("Accl -> x:{}, y:{}, z: {}".format(acc[0], acc[1], acc[2]))
+    print("Gyro -> x:{}, y:{}, z: {}".format(gyro[0], gyro[1], gyro[2]))
+    print("Mag -> x:{}, y:{}, z: {}".format(mag[0], mag[1], mag[2]))
+    print("\n")
+    time.sleep(0.1)
+    with open(filename, 'a', newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([mag[0], mag[1], mag[2]])
+        ax=acc[0]
+        ay=acc[1]
+        az=acc[2]
+        acc_abs=np.sqrt(ax**2+ay**2+az**2)
+    return acc_abs
 
 if __name__ == "__main__": #ターミナルから実行した場合
     bmx_setup()
@@ -108,22 +127,16 @@ if __name__ == "__main__": #ターミナルから実行した場合
         writer = csv.writer(f)
         writer.writerow(['Mag_x', 'Mag_y', 'Mag_z'])
     while True:
-        acc = acc_value()
-        gyro= gyro_value()
-        mag = mag_value()
-        acc_abs=sqrt(acc[0]**2+acc[1]**2+acc[2]**2)
-        print("Accl -> x:{}, y:{}, z: {}".format(acc[0], acc[1], acc[2]))
-        print("Gyro -> x:{}, y:{}, z: {}".format(gyro[0], gyro[1], gyro[2]))
-        print("Mag -> x:{}, y:{}, z: {}".format(mag[0], mag[1], mag[2]))
-        print("\n")
-        time.sleep(0.1)
-        with open(filename, 'a', newline="") as f:
-            writer = csv.writer(f)
-            writer.writerow([mag[0], mag[1], mag[2]])
-        
+        acc_abs=write_data()
         # 落下判定
         if acc_abs<9.8:
-            count=0
+            start_time=time.time()
+            while True:
+                now_time=time.time()
+                count=now_time-start_time
+                write_data()
+                if count>=60: # 60秒経過後パラシュート溶断
+                    GPIO.output(16, 0) # 回路班の上げた回路図より
+                    break
 
         # 着地判定
-        if :
