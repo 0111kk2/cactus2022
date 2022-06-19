@@ -125,11 +125,10 @@ if __name__ == "__main__": #ターミナルから実行した場合
     with open(filename, 'a') as f:
         writer = csv.writer(f)
         writer.writerow(['Acc_x', 'Acc_y', 'Acc_z','temp','humid','press'])
+    
+    f=open(filename, 'a', newline="")
     while True:
-        f=open(filename, 'a', newline="")
         acc_abs=write_data(f)
-        f.close()
-
         # 落下判定
         if acc_abs<9.0:
             start_time=time.time()
