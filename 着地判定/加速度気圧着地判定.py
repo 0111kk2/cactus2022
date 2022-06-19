@@ -146,10 +146,12 @@ if __name__ == "__main__": #ターミナルから実行した場合
                 GPIO.output(led,False)
                 if count>=60: # 60秒経過後パラシュート溶断
                     GPIO.output(led, True) # 回路班の上げた回路図より
+                    time.sleep(10)
                     f.close()
                     break
                 elif now_pressure > judge_pressure:
                     GPIO.output(led, True)
+                    time.sleep(10)
                     f.close()
                     break
 GPIO.cleanup()# 着地判定
