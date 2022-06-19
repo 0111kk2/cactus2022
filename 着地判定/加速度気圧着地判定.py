@@ -128,6 +128,7 @@ if __name__ == "__main__": #ターミナルから実行した場合
     while True:
         f=open(filename, 'a', newline="")
         acc_abs=write_data(f)
+        f.close()
 
         # 落下判定
         if acc_abs<9.0:
