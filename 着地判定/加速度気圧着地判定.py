@@ -130,13 +130,13 @@ if __name__ == "__main__": #ターミナルから実行した場合
     while True:
         acc_abs=write_data(f)
         # 落下判定
-        if acc_abs<9.0:
+        if acc_abs<9.5: # 実証実験で正規分布を取得し、値を決める
             start_time=time.time()
             bme280 = cgsensor.BME280(i2c_addr=0x76)  # BME280制御クラスのインスタンス, i2c_addrは0x76/0x77から選択
             bme280.forced()  # Forcedモードで測定を行い, 結果をtemperature, pressure, humidityに入れる
             first_pressure = bme280.pressure
             judge_pressure = first_pressure + 3
-            while acc_abs>9.0:
+            while acc_abs>9.5:
                 now_time=time.time()
                 count=now_time-start_time
                 acc_abs=write_data(f)                
