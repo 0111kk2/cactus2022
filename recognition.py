@@ -77,10 +77,10 @@ if __name__ == "__main__" :
         max_index = np.argmax(arrow)
         if max_index>256:
             #左回転
-            motor(-600,600,0.1)
+            motor(-200,200,0.1)
         elif max_index<=256:
             #右回転
-            motor(600,-600,0.1)
+            motor(200,-200,0.1)
 
 
 
