@@ -79,7 +79,7 @@ if __name__ == "__main__" :
         if  propotion > 0.4:
             motor(0,0,0)
             break
-        elif propotion <= 40:
+        elif propotion <= 0.4:
             if max_index>256:
                 #左回転
                 motor(-200,200,0.1)
