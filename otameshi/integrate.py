@@ -358,4 +358,3 @@ if __name__ == '__main__':
                         SERVO(600,600)
                         time.sleep(1)
                         SERVO(0,0)
-折りたたむ
