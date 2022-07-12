@@ -21,7 +21,7 @@ MAG_ADDR = 0x13
 MAG_R_ADDR = 0x42
 i2c = SMBus(1)
 
-SERVO_PIN_R = 16
+SERVO_PIN_R = 17
 SERVO_PIN_L = 18
 
 def bmx_setup():
@@ -151,7 +151,7 @@ def read_gps():
         # print(data)
         # print(type(data))
         if isinstance(data, bytearray):
-            gpsData = data.decode('utf-8', 'replace')
+            gpsData = data.decode('sjis', 'replace')
 
         # print(gpsData)
         # print()
