@@ -20,7 +20,7 @@ from matplotlib import pyplot as plt
 import time
 import picamera
 pi=pigpio.pi()
-lat2,lon2=35.920830,139.908372 #王子駅 , 神楽坂から見た真北
+lat2,lon2=35.920830,139.908372 #目標方位角
 RX = 20
 pi = pigpio.pi()
 
@@ -646,12 +646,12 @@ if __name__ == '__main__':
     #以下，誘導
     while True:
         GPS_data = run_gps_with_Ohshima()
-        if GPS_data[4]>10000:
+        if GPS_data[4]>10:
             i=1
             while i:
                 #GPSの情報取得
                 GPS_data = run_gps_with_Ohshima()
-                if GPS_data[4]<10000:
+                if GPS_data[4]<10:
                     break
                 else:
                 #PID制御
