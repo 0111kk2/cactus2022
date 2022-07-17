@@ -21,7 +21,7 @@ import time
 import picamera
 pi=pigpio.pi()
 lat2,lon2=35.7525063,139.7380564 #王子駅 , 神楽坂から見た真北
-RX = 4
+RX = 20
 pi = pigpio.pi()
 
 ELLIPSOID_GRS80 = 1  # GRS80
@@ -51,7 +51,7 @@ MAG_ADDR = 0x13
 MAG_R_ADDR = 0x42
 i2c = SMBus(1)
 SERVO_R=17
-SERVO_L=18
+SERVO_L=27
 
 
 #=======================大島さんのGPS
