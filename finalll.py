@@ -21,7 +21,7 @@ import time
 import picamera
 pi=pigpio.pi()
 lat2,lon2= 35.911127,139.902922 #位置情報
-RX = 20 #TDX
+RX = 15 #TDX
 pi = pigpio.pi()
 
 ELLIPSOID_GRS80 = 1  # GRS80
