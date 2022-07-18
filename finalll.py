@@ -648,7 +648,9 @@ if __name__ == '__main__':
     #以下，誘導
     while True:
         GPS_data = run_gps_with_Ohshima()
+        print(GPS_data)
         if GPS_data[4]>10:
+            print('yes')
             i=1
             while i:
                 #GPSの情報取得
