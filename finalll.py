@@ -185,7 +185,7 @@ def location():
     try:
         while True:
             utc, lat, lon, sHeight, gHeight = read_gps()
-            print(lat, lon )
+            print(utc, lat, lon )
             if utc != -1.0 and lat != -1.0:
                 break
             time.sleep(1)
