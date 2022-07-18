@@ -20,7 +20,7 @@ from matplotlib import pyplot as plt
 import time
 import picamera
 pi=pigpio.pi()
-lat2,lon2=35.920830,139.908372 #王子駅 , 神楽坂から見た真北
+lat2,lon2= 35.911127,139.902922 #位置情報
 RX = 20 #TDX
 pi = pigpio.pi()
 
@@ -50,8 +50,9 @@ GYRO_R_ADDR = 0x02
 MAG_ADDR = 0x13
 MAG_R_ADDR = 0x42
 i2c = SMBus(1)
-SERVO_R=17
-SERVO_L=18
+#駆動部分のpinの変更も忘れない!まじで！！！！！
+SERVO_R = 17
+SERVO_L = 18
 
 
 #=======================大島さんのGPS
@@ -211,8 +212,8 @@ def SERVO(a,b):#サーボモーターの回転の1500-2300を0-800に変換，�
     pi.set_servo_pulsewidth(SERVO_R,1480-b)
 
 def motor(left,right,seconds):
-	SERVO_PIN_R = 5
-	SERVO_PIN_L = 6
+	SERVO_PIN_R = 17
+	SERVO_PIN_L = 18
 	#　速く前
 	pi.set_servo_pulsewidth( SERVO_PIN_R, 1480 - right )
 	pi.set_servo_pulsewidth( SERVO_PIN_L, 1485 + left )
@@ -313,8 +314,8 @@ def run_gps():
     # 最初の1行は中途半端なデーターが読めることがあるので、捨てる
     s.readline()
     #print(s.readline())
-       # print(s.readline())
-       #  GPSデーターを読み、文字列に変換する
+    # print(s.readline())
+    #  GPSデーターを読み、文字列に変換する
     sentence = s.readline().decode('sjis')
     #print(sentence)
         
@@ -332,27 +333,27 @@ def run_gps():
     
 
 def bmx_setup():
-   # acc_data_setup : 加速度の値をセットアップ
-   i2c.write_byte_data(ACCL_ADDR, 0x0F, 0x03)
-   i2c.write_byte_data(ACCL_ADDR, 0x10, 0x08)
-   i2c.write_byte_data(ACCL_ADDR, 0x11, 0x00)
-   time.sleep(0.5)
-   # gyr_data_setup : ジャイロ値をセットアップ
-   i2c.write_byte_data(GYRO_ADDR, 0x0F, 0x04)
-   i2c.write_byte_data(GYRO_ADDR, 0x10, 0x07)
-   i2c.write_byte_data(GYRO_ADDR, 0x11, 0x00)
-   time.sleep(0.5)
-   # mag_data_setup : 地磁気値をセットアップ
-   data = i2c.read_byte_data(MAG_ADDR, 0x4B)
-   if(data == 0):
-       i2c.write_byte_data(MAG_ADDR, 0x4B, 0x83)
-       time.sleep(0.5)
-   i2c.write_byte_data(MAG_ADDR, 0x4B, 0x01)
-   i2c.write_byte_data(MAG_ADDR, 0x4C, 0x00)
-   i2c.write_byte_data(MAG_ADDR, 0x4E, 0x84)
-   i2c.write_byte_data(MAG_ADDR, 0x51, 0x04)
-   i2c.write_byte_data(MAG_ADDR, 0x52, 0x16)
-   time.sleep(0.5)
+    # acc_data_setup : 加速度の値をセットアップ
+    i2c.write_byte_data(ACCL_ADDR, 0x0F, 0x03)
+    i2c.write_byte_data(ACCL_ADDR, 0x10, 0x08)
+    i2c.write_byte_data(ACCL_ADDR, 0x11, 0x00)
+    time.sleep(0.5)
+    # gyr_data_setup : ジャイロ値をセットアップ
+    i2c.write_byte_data(GYRO_ADDR, 0x0F, 0x04)
+    i2c.write_byte_data(GYRO_ADDR, 0x10, 0x07)
+    i2c.write_byte_data(GYRO_ADDR, 0x11, 0x00)
+    time.sleep(0.5)
+    # mag_data_setup : 地磁気値をセットアップ
+    data = i2c.read_byte_data(MAG_ADDR, 0x4B)
+    if(data == 0):
+        i2c.write_byte_data(MAG_ADDR, 0x4B, 0x83)
+        time.sleep(0.5)
+    i2c.write_byte_data(MAG_ADDR, 0x4B, 0x01)
+    i2c.write_byte_data(MAG_ADDR, 0x4C, 0x00)
+    i2c.write_byte_data(MAG_ADDR, 0x4E, 0x84)
+    i2c.write_byte_data(MAG_ADDR, 0x51, 0x04)
+    i2c.write_byte_data(MAG_ADDR, 0x52, 0x16)
+    time.sleep(0.5)
 def acc_value():
    data = [0, 0, 0, 0, 0, 0]
    acc_data = [0.0, 0.0, 0.0]
@@ -641,17 +642,19 @@ if __name__ == '__main__':
     SERVO(0,0)
     #着地判定
     land_detection()
+    print("land_detection")
     offsets = getofset()
     open_gps()
     #以下，誘導
     while True:
         GPS_data = run_gps_with_Ohshima()
-        if GPS_data[4]>10000:
+        if GPS_data[4]>10:
             i=1
             while i:
                 #GPSの情報取得
                 GPS_data = run_gps_with_Ohshima()
-                if GPS_data[4]<10000:
+                if GPS_data[4]<10:
+                    print("break!")
                     break
                 else:
                 #PID制御
