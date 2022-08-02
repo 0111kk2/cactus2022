@@ -1,4 +1,3 @@
-from unicodedata import name
 from sensor.communication import xbee
 from sensor.GPS import gps
 import time
