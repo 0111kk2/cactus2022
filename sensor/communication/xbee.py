@@ -14,7 +14,7 @@ def str_trans(string):
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
         bytesize=serial.EIGHTBITS,
-        timeout=5
+        timeout=0
     )
     try:
         string = string + '\n'
