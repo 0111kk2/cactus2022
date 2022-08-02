@@ -18,8 +18,10 @@ if __name__ == "__main__":
                     print("Status V")
                     xbee.str_trans("Status V")
             else:
-                # pass
+                #うまくGPS情報がとれた場合
                 print(utc, lat, lon, sHeight, gHeight)
+                
+                #xbeeに送るには変数をstr変換する必要がある。↓
                 xbee.str_trans(f'{utc} {lat} {lon} {sHeight} {gHeight}')
             time.sleep(1)
     except:
