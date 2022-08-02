@@ -29,6 +29,7 @@ def str_trans(string):
         ser.flush()
         ser.close()
         print("error programam finish")
+        traceback.print_exc()
         exit()
     ser.flush()
     ser.close()
