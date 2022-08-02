@@ -8,7 +8,7 @@ def str_trans(string):
     """
     string = str(string)
     ser = serial. Serial(
-        port="/dev/serial0",
+        port="/dev/ttyS0",
         baudrate=9600,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
