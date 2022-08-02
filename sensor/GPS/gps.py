@@ -4,7 +4,7 @@ import pigpio
 import numpy as np
 import traceback
 
-RX = 20
+RX = 16
 pi = pigpio.pi()
 
 ELLIPSOID_GRS80 = 1  # GRS80
