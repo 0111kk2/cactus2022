@@ -20,6 +20,7 @@ if __name__ == "__main__":
             else:
                 # pass
                 print(utc, lat, lon, sHeight, gHeight)
+                xbee.str_trans(f'{utc} {lat} {lon} {sHeight} {gHeight}')
             time.sleep(1)
     except:
         gps.close_gps()
