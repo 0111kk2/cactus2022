@@ -1,4 +1,5 @@
 import serial
+import traceback
 # from time import time
 import time
 def str_trans(string):
@@ -17,10 +18,13 @@ def str_trans(string):
     )
     try:
         string = string + '\n'
-        moji = string.encode()
-        commands = [moji]
-        for cmd in commands:
-            ser.write(cmd)
+
+        for cmd in string:
+            ser.write(cmd.encode())
+        # moji = string.encode()
+        # commands = [moji]
+        # for cmd in commands:
+        #     ser.write(cmd)
     except:
         ser.flush()
         ser.close()
