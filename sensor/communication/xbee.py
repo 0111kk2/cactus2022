@@ -15,11 +15,15 @@ def str_trans(string):
         bytesize=serial.EIGHTBITS,
         timeout=5
     )
-    string = string + '\n'
-    moji = string.encode()
-    commands = [moji]
-    for cmd in commands:
-        ser.write(cmd)
+    try:
+        string = string + '\n'
+        moji = string.encode()
+        commands = [moji]
+        for cmd in commands:
+            ser.write(cmd)
+    except:
+        ser.flush()
+        ser.close()
     ser.flush()
     ser.close()
 
