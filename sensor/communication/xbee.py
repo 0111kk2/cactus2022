@@ -12,6 +12,7 @@ def str_trans(string):
         # port="/dev/ttyAMA0",
         port="/dev/ttyS0",
         baudrate=9600,
+        # baudrate=19200,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
         bytesize=serial.EIGHTBITS,
@@ -20,12 +21,12 @@ def str_trans(string):
     try:
         string = string + '\n'
 
-        for cmd in string:
-            ser.write(cmd.encode())
-        # moji = string.encode()
-        # commands = [moji]
-        # for cmd in commands:
-        #     ser.write(cmd)
+        # for cmd in string:
+        #     ser.write(cmd.encode())
+        moji = string.encode()
+        commands = [moji]
+        for cmd in commands:
+            ser.write(cmd)
     except:
         ser.flush()
         ser.close()
@@ -39,7 +40,9 @@ if __name__ =="__main__":
     str1 = "aaaa"
     str_trans(str1)
     print(str1)
+
     time.sleep(1)
+    
     str2 = 123
     str2 = str(str2)
     str_trans(str2)
