@@ -24,6 +24,8 @@ def str_trans(string):
     except:
         ser.flush()
         ser.close()
+        print("error programam finish")
+        exit()
     ser.flush()
     ser.close()
 
