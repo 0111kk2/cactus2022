@@ -75,16 +75,14 @@ if __name__ == "__main__" :
         arrow = camera_recognition()
         print(arrow)
         max_index = np.argmax(arrow)
-        if max_index>256:
-            #左回転
-            motor(-200,200,0.1)
-        elif max_index<=256:
-            #右回転
-            motor(200,-200,0.1)
-
-
-
-
-
-
-
+        propotion = np.sum(arrow)/(512*384)
+        if  propotion > 0.4:
+            motor(0,0,0)
+            break
+        elif propotion <= 0.4:
+            if max_index>256:
+                #左回転
+                motor(-200,200,0.1)
+            elif max_index<=256:
+                #右回転
+                motor(200,-200,0.1)
